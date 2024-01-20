@@ -21,7 +21,7 @@ class ListPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const AddPage()));
+              .push(MaterialPageRoute(builder: (context) =>  AddPage()));
         },
         label: const Text('Add'),
       ),

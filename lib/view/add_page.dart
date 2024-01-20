@@ -1,7 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 class AddPage extends StatelessWidget {
-  const AddPage({super.key});
+  AddPage({super.key});
+
+  TextEditingController titileController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +25,13 @@ class AddPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           TextField(
+            controller: titileController,
             decoration: InputDecoration(
                 hintText: 'Title',
                 hintStyle: TextStyle(color: Colors.grey[400])),
           ),
           TextField(
+            controller: descriptionController,
             decoration: InputDecoration(
                 hintText: 'Description',
                 hintStyle: TextStyle(color: Colors.grey[400])),
@@ -38,5 +45,10 @@ class AddPage extends StatelessWidget {
         ],
       ),
     );
+    
+  }
+  void submitData(){
+    final title = titileController.text;
+    final description = descriptionController.text;
   }
 }
