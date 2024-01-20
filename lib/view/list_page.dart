@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:quiz_app/view/add_page.dart';
 
@@ -21,10 +19,12 @@ class ListPage extends StatelessWidget {
         elevation: 10,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddPage()));},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const AddPage()));
+        },
         label: const Text('Add'),
       ),
     );
   }
-
 }
