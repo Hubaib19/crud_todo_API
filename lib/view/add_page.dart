@@ -45,10 +45,15 @@ class AddPage extends StatelessWidget {
         ],
       ),
     );
-    
   }
-  void submitData(){
+
+  void submitData() {
     final title = titileController.text;
     final description = descriptionController.text;
+    final body = {
+      "title": title,
+      "description": description,
+      "is_completed": false
+    };
   }
 }
