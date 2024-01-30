@@ -35,10 +35,13 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.indigo[300],
       appBar: AppBar(
         title: Text(Provider.of<TodoProvider>(context).isEdit
             ? 'Edit Todo'
             : 'ADD TODO'),
+        backgroundColor: Colors.indigo[300],
+        elevation: 5,
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -71,6 +74,10 @@ class _AddPageState extends State<AddPage> {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const TodoListPage()));
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 87, 96, 156)), 
+            ),
             child: Text(
               Provider.of<TodoProvider>(context).isEdit ? 'Edit' : 'Save',
             ),

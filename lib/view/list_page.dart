@@ -11,8 +11,11 @@ class TodoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.indigo[300],
       appBar: AppBar(
         title: const Text('Todo here,'),
+        backgroundColor: Colors.indigo[300],
+        elevation: 5,
       ),
       body: Consumer<TodoProvider>(
         builder: (context, value, child) {
@@ -20,30 +23,33 @@ class TodoListPage extends StatelessWidget {
               itemCount: value.items.length,
               itemBuilder: (context, index) {
                 final todoModel = value.items[index];
-                return ListTile(
-                  leading: Text('${index + 1}'),
-                  title: Text(todoModel.title!),
-                  subtitle: Text(todoModel.description!),
-                  trailing: PopupMenuButton(onSelected: (value) {
-                    if (value == 'edit') {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddPage(todoModel: todoModel)));
-                    } else if (value == 'delete') {
-                      Provider.of<TodoProvider>(context, listen: false)
-                          .deleteById(todoModel.id!);
-                    }
-                  }, itemBuilder: (context) {
-                    return [
-                      const PopupMenuItem(
-                        child: Text('Edit'),
-                        value: 'edit',
-                      ),
-                      PopupMenuItem(
-                        child: Text('delete'),
-                        value: 'delete',
-                      )
-                    ];
-                  }),
+                return Card(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: Text('${index + 1}'),
+                    title: Text(todoModel.title!),
+                    subtitle: Text(todoModel.description!),
+                    trailing: PopupMenuButton(onSelected: (value) {
+                      if (value == 'edit') {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddPage(todoModel: todoModel)));
+                      } else if (value == 'delete') {
+                        Provider.of<TodoProvider>(context, listen: false)
+                            .deleteById(todoModel.id!);
+                      }
+                    }, itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem(
+                          child: Text('Edit'),
+                          value: 'edit',
+                        ),
+                        PopupMenuItem(
+                          child: Text('delete'),
+                          value: 'delete',
+                        )
+                      ];
+                    }),
+                  ),
                 );
               });
         },
@@ -54,6 +60,7 @@ class TodoListPage extends StatelessWidget {
               .push(MaterialPageRoute(builder: (context) => AddPage()));
         },
         label: Text('ADD TODO'),
+        backgroundColor: Color.fromARGB(255, 87, 98, 156),
       ),
     );
   }
