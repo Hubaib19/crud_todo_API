@@ -1,5 +1,6 @@
-import 'dart:convert';
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/view/add_page.dart';
 import 'package:http/http.dart' as http;
@@ -50,18 +51,18 @@ class _ListPageState extends State<ListPage> {
               trailing: PopupMenuButton(
                 onSelected: (value) {
                   if (value == 'edit') {
-                    // Add edit logic here
+                    editPage(item);
                   } else if (value == 'delete') {
                     deleteById(id);
                   }
                 },
                 itemBuilder: (context) {
                   return [
-                    const PopupMenuItem(
+                     PopupMenuItem(
                       child: Text('Edit'),
                       value: 'edit',
                     ),
-                    const PopupMenuItem(
+                      PopupMenuItem(
                       child: Text('Delete'),
                       value: 'delete',
                     )
@@ -76,10 +77,19 @@ class _ListPageState extends State<ListPage> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => AddPage()));
+          setState(() {
+            isLoading = true;
+          });
+          fetchTodo();
         },
         label: const Text('Add'),
       ),
     );
+  }
+
+  void editPage(Map item) {
+    final route = MaterialPageRoute(builder: (context) => AddPage(todo :item));
+    Navigator.push(context, route);
   }
 
   Future<void> deleteById(String id) async {
@@ -87,8 +97,7 @@ class _ListPageState extends State<ListPage> {
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
     if (response.statusCode == 200) {
-      final filtered =
-          items.where((element) => element['_id'] != id).toList();
+      final filtered = items.where((element) => element['_id'] != id).toList();
       setState(() {
         items = filtered;
       });
@@ -107,8 +116,7 @@ class _ListPageState extends State<ListPage> {
       });
     }
     setState(() {
-      isLoading = false; 
+      isLoading = false;
     });
   }
 }
-
