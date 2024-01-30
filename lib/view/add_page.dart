@@ -58,14 +58,15 @@ class _AddPageState extends State<AddPage> {
             minLines: 5,
             maxLines: 8,
           ),
+          SizedBox(height: 20,),
           ElevatedButton(
             onPressed: () {
              final todoProvider= Provider.of<TodoProvider>(context, listen: false);
              todoProvider.isEdit? todoProvider.updateData(widget.todoModel):todoProvider.SubmitData();
              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const TodoListPage()));            },
             child: Text(
-              Provider.of<TodoProvider>(context).isEdit? 'Update'
-            : 'Submit',
+              Provider.of<TodoProvider>(context).isEdit? 'Edit'
+            : 'Save',
             ),
           )
         ],

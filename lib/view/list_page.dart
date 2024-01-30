@@ -12,7 +12,7 @@ class TodoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo List'),
+        title: const Text('Todo here,'),
       ),
       body: Consumer<TodoProvider>(
         builder:(context,value,child){
@@ -44,6 +44,7 @@ class TodoListPage extends StatelessWidget {
                 }),
             );
           });
+          
         } ,
       ),
       floatingActionButton: FloatingActionButton.extended(
