@@ -1,141 +1,75 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:quiz_app/controller/todo_provider.dart';
+import 'package:quiz_app/view/list_page.dart';
 
 class AddPage extends StatefulWidget {
-  final Map? todo;
-
-  const AddPage({Key? key, this.todo}) : super(key: key);
+  final todoModel;
+  const AddPage({super.key, this.todoModel});
 
   @override
   State<AddPage> createState() => _AddPageState();
 }
 
 class _AddPageState extends State<AddPage> {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  bool isEdit = false;
-
   @override
   void initState() {
     super.initState();
-    final todo = widget.todo;
+    final todo=widget.todoModel;
+    final todoProvider = Provider.of<TodoProvider>(context, listen: false);
     if (todo != null) {
-      isEdit = true;
-      final title = todo['title'];
-      final description = todo['description'];
-      titleController.text = title;
-      descriptionController.text = description;
+      todoProvider.isEditValueChange(true);
+      final title=todo.title;
+      final descriptio=todo.description;
+      todoProvider.titleController.text=title;
+      todoProvider.DescriptionController.text=descriptio;
+    } else {
+      todoProvider.isEditValueChange(false);
+      todoProvider.titleController.text='';
+      todoProvider.DescriptionController.text='';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo[300],
       appBar: AppBar(
-        title: Text(
-          isEdit ? 'Edit' : 'Add here',
-          style: const TextStyle(
-              color: Colors.white, fontSize: 30, fontWeight: FontWeight.w200),
-        ),
-        backgroundColor: Colors.indigo[300],
-        elevation: 10,
+        title: Text(Provider.of<TodoProvider>(context).isEdit
+            ? 'Edit Todo'
+            : 'ADD TODO'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           TextField(
-            controller: titleController,
-            decoration: InputDecoration(
-                hintText: 'Title',
-                hintStyle: TextStyle(color: Colors.grey[400])),
+            controller: Provider.of<TodoProvider>(context, listen: false)
+                .titleController,
+            decoration: const InputDecoration(hintText: 'title'),
           ),
           TextField(
-            controller: descriptionController,
-            decoration: InputDecoration(
-                hintText: 'Description',
-                hintStyle: TextStyle(color: Colors.grey[400])),
-            maxLines: 8,
+            controller: Provider.of<TodoProvider>(context, listen: false)
+                .DescriptionController,
+            decoration: const InputDecoration(
+              hintText: 'Description',
+            ),
+            keyboardType: TextInputType.multiline,
             minLines: 5,
-          ),
-          const SizedBox(
-            height: 25,
+            maxLines: 8,
           ),
           ElevatedButton(
-            onPressed: isEdit ? editData : () => submitData(context),
-            child: Text(isEdit ? 'Edit' : 'Save'),
-          ),
+            onPressed: () {
+             final todoProvider= Provider.of<TodoProvider>(context, listen: false);
+             todoProvider.isEdit? todoProvider.updateData(widget.todoModel):todoProvider.SubmitData();
+             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const TodoListPage()));            },
+            child: Text(
+              Provider.of<TodoProvider>(context).isEdit? 'Update'
+            : 'Submit',
+            ),
+          )
         ],
       ),
     );
-  }
-
-  Future<void> editData() async {
-    final todo = widget.todo;
-    if (todo == null) {
-      print('Error');
-      return;
-    }
-    final id = todo['_id'];
-    final title = titleController.text;
-    final description = descriptionController.text;
-    final body = {
-      "title": title,
-      "description": description,
-      "is_completed": false,
-    };
-    final url = "https://api.nstack.in/v1/todos/$id";
-    final uri = Uri.parse(url);
-    final response = await http.put(
-      uri,
-      body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      print('Edited');
-    } else {
-      print('Edit failed');
-    }
-  }
-
-  Future<void> submitData(BuildContext context) async {
-    final title = titleController.text; 
-    final description = descriptionController.text;
-    final body = {
-      "title": title,
-      "description": description,
-      "is_completed": false
-    };
-    final url = 'https://api.nstack.in/v1/todos';
-    final uri = Uri.parse(url);
-    final response = await http.post(
-      uri,
-      body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 201) {
-      titleController.text = '';
-      descriptionController.text = '';
-      print('Saved');
-      successMessage(context, 'Saved');
-    } else {
-      errorMessage(context, 'Failed');
-    }
-  }
-
-  void successMessage(BuildContext context, String message) {
-    final snackbar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void errorMessage(BuildContext context, String message) {
-    final snackbar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red[200],
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }
