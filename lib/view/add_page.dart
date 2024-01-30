@@ -17,18 +17,18 @@ class _AddPageState extends State<AddPage> {
   @override
   void initState() {
     super.initState();
-    final todo=widget.todoModel;
+    final todo = widget.todoModel;
     final todoProvider = Provider.of<TodoProvider>(context, listen: false);
     if (todo != null) {
       todoProvider.isEditValueChange(true);
-      final title=todo.title;
-      final descriptio=todo.description;
-      todoProvider.titleController.text=title;
-      todoProvider.DescriptionController.text=descriptio;
+      final title = todo.title;
+      final descriptio = todo.description;
+      todoProvider.titleController.text = title;
+      todoProvider.DescriptionController.text = descriptio;
     } else {
       todoProvider.isEditValueChange(false);
-      todoProvider.titleController.text='';
-      todoProvider.DescriptionController.text='';
+      todoProvider.titleController.text = '';
+      todoProvider.DescriptionController.text = '';
     }
   }
 
@@ -58,15 +58,21 @@ class _AddPageState extends State<AddPage> {
             minLines: 5,
             maxLines: 8,
           ),
-          SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: () {
-             final todoProvider= Provider.of<TodoProvider>(context, listen: false);
-             todoProvider.isEdit? todoProvider.updateData(widget.todoModel):todoProvider.SubmitData();
-             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const TodoListPage()));            },
+              final todoProvider =
+                  Provider.of<TodoProvider>(context, listen: false);
+              todoProvider.isEdit
+                  ? todoProvider.updateData(widget.todoModel)
+                  : todoProvider.SubmitData();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const TodoListPage()));
+            },
             child: Text(
-              Provider.of<TodoProvider>(context).isEdit? 'Edit'
-            : 'Save',
+              Provider.of<TodoProvider>(context).isEdit ? 'Edit' : 'Save',
             ),
           )
         ],

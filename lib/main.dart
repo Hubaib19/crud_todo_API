@@ -13,14 +13,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create:(context)=>TodoProvider(),
-      )],
+        ChangeNotifierProvider(
+          create: (context) => TodoProvider(),
+        )
+      ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData.dark(),
-        home: const TodoListPage()
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData.dark(),
+          home: const TodoListPage()),
     );
   }
 }
