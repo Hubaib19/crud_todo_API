@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:quiz_app/model/todo_model.dart';
 
 class TodoServices {
-  Future<List<TodoModel>> fetchTodo() async {
+  Future<List<TodoModel>> FromTodoServer() async {
     const url = 'https://api.nstack.in/v1/todos?page=1&limit=10';
     final uri = Uri.parse(url);
     final response = await http.get(uri);

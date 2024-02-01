@@ -6,7 +6,7 @@ import 'package:quiz_app/service/todo_service.dart';
 
 class TodoProvider extends ChangeNotifier {
   TodoProvider() {
-    fetchTodo();
+    FromTodoServer();
   }
   TextEditingController titleController = TextEditingController();
   TextEditingController DescriptionController = TextEditingController();
@@ -23,11 +23,11 @@ class TodoProvider extends ChangeNotifier {
     await todoServices.SubmitData(requestModel);
     titleController.text = '';
     DescriptionController.text = '';
-    fetchTodo();
+    FromTodoServer();
   }
 
-  Future<void> fetchTodo() async {
-    items = await todoServices.fetchTodo();
+  Future<void> FromTodoServer() async {
+    items = await todoServices.FromTodoServer();
     notifyListeners();
   }
 
@@ -46,7 +46,7 @@ class TodoProvider extends ChangeNotifier {
 
     try {
       await todoServices.updateData(requestModel, id);
-      fetchTodo();
+      FromTodoServer();
     } catch (e) {
       throw Exception('update :$e');
     }

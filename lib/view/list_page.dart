@@ -13,7 +13,7 @@ class TodoListPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.indigo[300],
       appBar: AppBar(
-        title: const Text('Todo here,'),
+        title: Center(child: const Text('Todo here,')),
         backgroundColor: Colors.indigo[300],
         elevation: 5,
       ),
